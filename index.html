@@ -95,14 +95,14 @@ button,input,select{font:inherit;color:inherit}
   linear-gradient(180deg,#ffe98a 0,#fff2b8 240px,#fff6d2 100%);animation:appare .5s both}
 @keyframes appare{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 header{background:var(--gi);position:relative;overflow:hidden;box-shadow:0 4px 0 var(--tq)}
-header .deco{position:absolute;right:-20px;top:-26px;height:150px;opacity:.9;pointer-events:none;overflow:visible}
+header .deco{position:absolute;right:18px;bottom:0;height:88px;pointer-events:none}
 .hd{max-width:1500px;margin:0 auto;padding:16px 24px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:relative}
 .logo{width:50px;height:50px;border-radius:15px;background:var(--tq);display:grid;place-items:center;box-shadow:0 5px 0 #00696c;flex:none}
 .logo svg{width:30px;height:30px}
 .hd h2{margin:0;font-family:var(--f-tit);font-size:26px;font-weight:700;color:var(--tq-dd);line-height:1.05}
 .hd h2 b{color:var(--tq);font-weight:700}
 .hd .sottot{font-size:13px;color:#6b5500;margin-top:3px;font-weight:700}
-.hd .dx{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-right:120px}
+.hd .dx{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-right:140px}
 .agg{font-size:12.5px;font-weight:800;background:#fff;color:var(--tq-dd);padding:7px 13px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 0 rgba(160,110,0,.2)}
 .agg.vecchio{background:var(--rosso);color:#fff}
 .btn-h{background:rgba(255,255,255,.55);border:2px solid var(--tq-dd);color:var(--tq-dd);border-radius:999px;padding:5px 13px;cursor:pointer;font-size:12.5px;font-weight:800;display:inline-flex;align-items:center;gap:6px}
@@ -244,11 +244,16 @@ footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:#7a6520;font-siz
 <!-- Forme riusate dalle illustrazioni -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <g id="f-monstera">
-      <path d="M0 0 C8 -40 58 -64 100 -42 C122 -30 126 -6 112 14 C86 42 30 38 0 0 Z" fill="#2f8f5b"/>
-      <path d="M0 0 C22 -3 44 -10 66 -12 C84 -14 100 -12 116 -8" fill="none" stroke="#236e45" stroke-width="3" stroke-linecap="round"/>
-      <path d="M40 -8 L52 -40 M64 -12 L80 -44 M86 -12 L102 -34 M44 -6 L54 20 M68 -10 L80 18 M90 -10 L102 10" fill="none" stroke="#236e45" stroke-width="2.2" stroke-linecap="round"/>
-      <path d="M10 -6 C20 -30 52 -48 84 -42" fill="none" stroke="#5fc08a" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+    <!-- Spatifillo: foglia lanceolata (base nell'origine, punta verso destra) e fiore bianco -->
+    <g id="f-lancia">
+      <path d="M0 0 C18 -17 58 -24 94 -10 C104 -6 111 -2 118 0 C111 2 104 6 94 10 C58 24 18 17 0 0 Z"/>
+      <path d="M2 0 C40 -3 80 -2 116 0" fill="none" stroke="#1f6b41" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>
+      <path d="M20 -6 C40 -14 66 -16 88 -9" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".2"/>
+    </g>
+    <g id="f-spata">
+      <path d="M0 0 C-15 -10 -17 -36 0 -54 C17 -36 15 -10 0 0 Z" fill="#fff"/>
+      <path d="M0 -4 C-6 -18 -6 -36 0 -50" fill="none" stroke="#dfe9e3" stroke-width="2"/>
+      <ellipse cx="3" cy="-20" rx="3.6" ry="11" fill="#f2c94c"/>
     </g>
     <g id="f-lingua">
       <path d="M-13 0 C-19 -92 -9 -172 0 -232 C9 -172 19 -92 13 0 Z" fill="#2d7a48" stroke="#c7d45a" stroke-width="3"/>
@@ -303,19 +308,25 @@ footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:#7a6520;font-siz
     </g>
   </svg>
 
-  <!-- Monstera nel vaso turchese -->
+  <!-- Spatifillo nel vaso turchese: tutte le foglie stanno dentro il disegno -->
   <svg class="pianta sx" viewBox="0 0 260 400" aria-hidden="true">
     <g class="oscilla" style="transform-origin:130px 300px">
-      <path d="M130 296 C127 236 100 196 72 164" fill="none" stroke="#2a7a4d" stroke-width="5" stroke-linecap="round"/>
-      <path d="M130 296 C134 226 160 176 194 144" fill="none" stroke="#2a7a4d" stroke-width="5" stroke-linecap="round"/>
-      <path d="M130 296 C131 226 127 156 122 96" fill="none" stroke="#2a7a4d" stroke-width="5" stroke-linecap="round"/>
-      <path d="M130 296 C118 262 84 252 46 244" fill="none" stroke="#2a7a4d" stroke-width="5" stroke-linecap="round"/>
-      <path d="M130 296 C142 262 186 246 222 238" fill="none" stroke="#2a7a4d" stroke-width="5" stroke-linecap="round"/>
-      <use href="#f-monstera" transform="translate(46 244) rotate(-168) scale(.82)"/>
-      <use href="#f-monstera" transform="translate(222 238) rotate(-16) scale(.8)"/>
-      <use href="#f-monstera" transform="translate(72 164) rotate(-138) scale(.98)"/>
-      <use href="#f-monstera" transform="translate(194 144) rotate(-44) scale(1)"/>
-      <use href="#f-monstera" transform="translate(122 96) rotate(-96) scale(1.1)"/>
+      <path d="M130 296 L110.7 290.8 M130 296 L149.3 290.8 M130 296 L99.4 270.3 M130 296 L160.6 270.3 M130 296 L100.4 232.6 M130 296 L159.6 232.6 M130 296 L119 206.7 M130 296 L143.9 217.2" fill="none" stroke="#2a7a4d" stroke-width="4" stroke-linecap="round"/>
+      <use href="#f-lancia" transform="translate(110.7 290.8) rotate(-165) scale(.85)" fill="#2a8452"/>
+      <use href="#f-lancia" transform="translate(149.3 290.8) rotate(-15) scale(.85)" fill="#2a8452"/>
+      <use href="#f-lancia" transform="translate(99.4 270.3) rotate(-140) scale(.92)" fill="#2f8f5b"/>
+      <use href="#f-lancia" transform="translate(160.6 270.3) rotate(-40) scale(.92)" fill="#2f8f5b"/>
+      <use href="#f-lancia" transform="translate(100.4 232.6) rotate(-115) scale(1.1)" fill="#3a9a62"/>
+      <use href="#f-lancia" transform="translate(159.6 232.6) rotate(-65) scale(1.1)" fill="#3a9a62"/>
+      <use href="#f-lancia" transform="translate(119 206.7) rotate(-97) scale(1.12)" fill="#2f8f5b"/>
+      <use href="#f-lancia" transform="translate(143.9 217.2) rotate(-80) scale(1.02)" fill="#46a86e"/>
+      <path d="M128 296 C126 220 116 140 112 72 M134 296 C138 220 148 150 152 96 M126 296 C118 240 96 180 84 140" fill="none" stroke="#3b8f5a" stroke-width="3.5" stroke-linecap="round"/>
+      <use href="#f-spata" transform="translate(112 72) rotate(-6)"/>
+      <use href="#f-spata" transform="translate(152 96) rotate(8) scale(.9)"/>
+      <use href="#f-spata" transform="translate(84 140) rotate(-22) scale(.75)"/>
+      <path d="M130 296 L112.8 273.9 M130 296 L147.2 273.9" fill="none" stroke="#2a7a4d" stroke-width="4" stroke-linecap="round"/>
+      <use href="#f-lancia" transform="translate(112.8 273.9) rotate(-128) scale(.78)" fill="#46a86e"/>
+      <use href="#f-lancia" transform="translate(147.2 273.9) rotate(-52) scale(.78)" fill="#3a9a62"/>
     </g>
     <path d="M72 306 L188 306 L174 394 L86 394 Z" fill="#00a3a6"/>
     <path d="M77 334 H183" stroke="#ffd000" stroke-width="7"/>
@@ -423,10 +434,14 @@ footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:#7a6520;font-siz
 <!-- ═══════════════════════ DASHBOARD ═══════════════════════ -->
 <div id="dash" hidden>
   <header>
-    <svg class="deco" viewBox="0 0 200 150" aria-hidden="true">
-      <use href="#f-monstera" transform="translate(150 150) rotate(-120) scale(.9)"/>
-      <use href="#f-monstera" transform="translate(170 150) rotate(-80) scale(.75)"/>
-      <use href="#f-monstera" transform="translate(190 140) rotate(-150) scale(.7)"/>
+    <svg class="deco" viewBox="0 0 150 100" aria-hidden="true">
+      <use href="#f-lancia" transform="translate(71.2 98.6) rotate(-160) scale(.5)" fill="#2a8452"/>
+      <use href="#f-lancia" transform="translate(78.8 98.6) rotate(-20) scale(.5)" fill="#2a8452"/>
+      <use href="#f-lancia" transform="translate(69.9 93.9) rotate(-130) scale(.55)" fill="#2f8f5b"/>
+      <use href="#f-lancia" transform="translate(80.1 93.9) rotate(-50) scale(.55)" fill="#3a9a62"/>
+      <path d="M77 100 C79 70 84 50 86 36" fill="none" stroke="#3b8f5a" stroke-width="2.5" stroke-linecap="round"/>
+      <use href="#f-spata" transform="translate(86 36) rotate(6) scale(.55)"/>
+      <use href="#f-lancia" transform="translate(74.1 90) rotate(-95) scale(.6)" fill="#46a86e"/>
     </svg>
     <div class="hd">
       <div class="logo" aria-hidden="true">
