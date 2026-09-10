@@ -81,7 +81,7 @@ button,input,select{font:inherit;color:inherit}
 #f-acc{margin-top:18px;width:min(390px,92vw);background:#fff;border-radius:20px;padding:18px 20px 16px;box-shadow:0 14px 36px rgba(120,85,0,.22);text-align:left;animation:entra .35s both}
 #f-acc label{display:block;font-size:12.5px;font-weight:800;color:var(--tq-dd);margin-bottom:7px}
 #f-acc .riga{display:flex;gap:8px}
-#chiave{flex:1;min-width:0;padding:11px 12px;border:2px solid var(--gi-l);border-radius:12px;font-size:16px;letter-spacing:1px;font-family:Consolas,"Courier New",monospace;text-transform:uppercase;background:var(--gi-ll)}
+#chiave{flex:1;min-width:0;padding:11px 12px;border:2px solid var(--gi-l);border-radius:12px;font-size:16px;letter-spacing:.5px;font-family:Consolas,"Courier New",monospace;background:var(--gi-ll)}
 #chiave:focus{outline:none;border-color:var(--tq);background:#fff;box-shadow:0 0 0 4px var(--tq-l)}
 #entra{background:var(--tq-dd);color:#fff;border:0;border-radius:12px;padding:0 18px;font-weight:800;cursor:pointer}
 #entra:hover{background:#08393c}
@@ -421,7 +421,7 @@ footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:#7a6520;font-siz
     <form id="f-acc" autocomplete="off" hidden>
       <label for="chiave">Chiave d'accesso</label>
       <div class="riga">
-        <input id="chiave" type="password" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" autocapitalize="characters">
+        <input id="chiave" type="text" placeholder="Scrivi la chiave d'accesso" spellcheck="false" autocapitalize="characters" autocomplete="off">
         <button id="entra" type="submit">Entra</button>
       </div>
       <label class="ricorda"><input type="checkbox" id="ricorda" checked> Ricorda la chiave su questo computer</label>
@@ -531,10 +531,14 @@ function caricaPacchetto() {
 const MEM = "zd_chiave";
 const leggiMem = () => { try { return localStorage.getItem(MEM) || ""; } catch { return ""; } };
 const scriviMem = v => { try { v ? localStorage.setItem(MEM, v) : localStorage.removeItem(MEM); } catch {} };
-/* Tollerante con quello che si incolla: spazi, apici, trattini mancanti, minuscole */
+/* Forma canonica della chiave: IDENTICA a normalizza_chiave() nello script Python.
+   Chiavi generate (4 gruppi da 5): tollera spazi, trattini, testo intorno; I e 1 → L.
+   Chiavi libere (es. un nome): maiuscole/minuscole, spazi e punteggiatura indifferenti. */
 const pulisci = s => {
-  const a = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
-  return a.length === 20 ? a.match(/.{5}/g).join("-") : s.trim().toUpperCase();
+  const t = s.toUpperCase().replace(/[I1]/g, "L");
+  const m = t.match(/[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}[\s\-–—_.]*[A-Z0-9]{5}/);
+  const a = (m ? m[0] : t).replace(/[^A-Z0-9]/g, "");
+  return a.length === 20 ? a.match(/.{5}/g).join("-") : s.toUpperCase().replace(/[^A-Z0-9]/g, "");
 };
 
 let CHIAVE = "", MAC = "", D = null, PK = null, PRONTO = null;
@@ -565,7 +569,11 @@ $("f-acc").onsubmit = async ev => {
   const btn = $("entra");
   btn.disabled = true; btn.textContent = "…"; $("err").textContent = "";
   try { await entra(PK, k, $("ricorda").checked); mostraDash(); }
-  catch (e) { $("err").textContent = e.message === "chiave" ? "Chiave non valida." : "Errore nell'apertura dei dati."; }
+  catch (e) {
+    $("err").innerHTML = e.message !== "chiave" ? "Errore nell'apertura dei dati."
+      : `Chiave non valida.<br><span style="font-weight:600;color:var(--ink2)">Controlla di averla scritta giusta, `
+        + `oppure copia e incolla la chiave dalla mail.</span>`;
+  }
   btn.disabled = false; btn.textContent = "Entra";
 };
 
