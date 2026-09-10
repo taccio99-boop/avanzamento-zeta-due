@@ -270,7 +270,11 @@ function caricaPacchetto() {
 const MEM = "zd_chiave";
 const leggiMem = () => { try { return localStorage.getItem(MEM) || ""; } catch { return ""; } };
 const scriviMem = v => { try { v ? localStorage.setItem(MEM, v) : localStorage.removeItem(MEM); } catch {} };
-const pulisci = s => s.trim().toUpperCase().replace(/\s+/g, "");
+/* Tollerante con quello che si incolla: spazi, apici, trattini mancanti, minuscole */
+const pulisci = s => {
+  const a = s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  return a.length === 20 ? a.match(/.{5}/g).join("-") : s.trim().toUpperCase();
+};
 
 let CHIAVE = "", MAC = "", D = null;
 
@@ -284,6 +288,9 @@ async function avvio() {
     catch { scriviMem(""); }
   }
   mostraAccesso("");
+  document.getElementById("chiave").onkeydown = ev => {
+    if (ev.key === "Enter") { ev.preventDefault(); document.getElementById("f-acc").requestSubmit(); }
+  };
   document.getElementById("f-acc").onsubmit = async ev => {
     ev.preventDefault();
     const btn = document.getElementById("entra"), k = pulisci(document.getElementById("chiave").value);
