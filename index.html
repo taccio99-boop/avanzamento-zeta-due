@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Avanzamento Zeta Due</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2300a3a6'/%3E%3Cpath d='M8 9h16L10 23h14' stroke='%23ffd000' stroke-width='3.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --tq:#00a3a6; --tq-d:#007c80; --tq-dd:#064e52; --tq-l:#d9f5f5; --tq-ll:#effbfb;
+  --gi:#ffd000; --gi-d:#e0a800; --gi-l:#fff4bf; --gi-ll:#fffbe6;
+  --ink:#10292b; --ink2:#3d5a5c; --muted:#6b8587; --line:#dbe7e7; --bg:#f5f8f7; --card:#fff;
+  --rosso:#c62828; --rosso-l:#fdecea; --ok:#2e7d32;
+  --r:10px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font:14px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+/* ── Testata ── */
+header{background:linear-gradient(120deg,var(--tq-dd) 0%,var(--tq-d) 45%,var(--tq) 100%);color:#fff;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(-45deg,var(--gi) 0 14px,#1c1c1c 14px 28px);opacity:.95}
+.hd{max-width:1500px;margin:0 auto;padding:18px 24px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo{width:46px;height:46px;border-radius:12px;background:var(--gi);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.18);flex:none}
+.logo svg{width:28px;height:28px}
+.hd h1{margin:0;font-size:24px;letter-spacing:.2px;font-weight:700;line-height:1.1}
+.hd h1 b{color:var(--gi)}
+.hd .sottot{font-size:12.5px;opacity:.85;margin-top:3px}
+.hd .dx{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.agg{font-size:12px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.18);padding:6px 11px;border-radius:999px;white-space:nowrap}
+.agg.vecchio{background:var(--gi);color:#3a2d00;border-color:var(--gi-d);font-weight:600}
+.btn-h{background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12.5px}
+.btn-h:hover{background:rgba(255,255,255,.12)}
+
+main{max-width:1500px;margin:0 auto;padding:20px 24px 40px}
+
+/* ── Accesso ── */
+#accesso{min-height:calc(100vh - 92px);display:grid;place-items:center;padding:30px 16px}
+.box-acc{width:100%;max-width:400px;background:var(--card);border-radius:14px;box-shadow:0 10px 40px rgba(6,78,82,.14);overflow:hidden;border:1px solid var(--line)}
+.box-acc .top{height:8px;background:linear-gradient(90deg,var(--tq),var(--gi))}
+.box-acc form{padding:26px 26px 24px}
+.box-acc h2{margin:0 0 4px;font-size:19px}
+.box-acc p{margin:0 0 18px;color:var(--muted);font-size:13px}
+.box-acc label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.box-acc input[type=password],.box-acc input[type=text]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:16px;letter-spacing:1px;font-family:Consolas,"Courier New",monospace;text-transform:uppercase}
+.box-acc input:focus{outline:none;border-color:var(--tq);box-shadow:0 0 0 3px var(--tq-l)}
+.ricorda{display:flex;align-items:center;gap:8px;margin:14px 0 18px;font-size:13px;color:var(--ink2);font-weight:400!important}
+.btn{background:var(--tq);color:#fff;border:0;border-radius:9px;padding:11px 16px;width:100%;font-weight:600;cursor:pointer;font-size:14.5px}
+.btn:hover{background:var(--tq-d)}
+.btn:disabled{opacity:.6;cursor:wait}
+.err{color:var(--rosso);font-size:13px;margin-top:12px;min-height:18px}
+
+/* ── Indicatori ── */
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;position:relative;overflow:hidden}
+.k::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tq)}
+.k.g::before{background:var(--gi)}
+.k .l{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600}
+.k .v{font-size:25px;font-weight:700;margin-top:2px;line-height:1.15}
+.k .d{font-size:12px;color:var(--ink2)}
+
+/* ── Filtri ── */
+.filtri{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.cerca{flex:1 1 240px;max-width:380px;position:relative}
+.cerca input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.cerca input:focus,.filtri select:focus{outline:none;border-color:var(--tq);box-shadow:0 0 0 3px var(--tq-l)}
+.cerca svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--muted)}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:9px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--ink2);white-space:nowrap}
+.seg button.on{background:var(--tq);color:#fff;font-weight:600}
+.seg button .n{opacity:.75;font-size:11.5px;margin-left:3px}
+.filtri select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;max-width:230px}
+.conta{margin-left:auto;font-size:12.5px;color:var(--muted)}
+
+/* ── Tabella ── */
+.tw{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:auto;max-height:calc(100vh - 150px)}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1080px}
+thead th{position:sticky;top:0;z-index:2;background:var(--tq-dd);color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:600;text-align:left;padding:10px 10px;white-space:nowrap;cursor:pointer;user-select:none}
+thead th.r{text-align:right}
+thead th:hover{background:#0a5f64}
+thead th .fr{opacity:.55;margin-left:4px;font-size:10px}
+thead th.ord .fr{opacity:1;color:var(--gi)}
+thead th.qta{background:#0b666b}
+thead th.qta.main{background:var(--gi);color:#3a2d00}
+tbody td{padding:8px 10px;border-bottom:1px solid #edf3f3;vertical-align:middle}
+tbody tr:hover td{background:var(--tq-ll)}
+tbody tr.attesa td{background:#fffdf3}
+tbody tr.attesa:hover td{background:var(--gi-ll)}
+td.r{text-align:right}
+.com{font-family:Consolas,"Courier New",monospace;font-weight:700;color:var(--tq-dd);font-size:13px;white-space:nowrap}
+.brand{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:4px;margin-left:6px;vertical-align:1px;font-family:"Segoe UI",sans-serif}
+.brand.gu{background:#e8f5e9;color:#1b5e20}
+.brand.ysl{background:#1c1c1c;color:#fff}
+.art{font-size:12px;color:var(--muted);margin-top:2px;max-width:235px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scad{white-space:nowrap}
+.scad.pass{color:var(--rosso);font-weight:600}
+.scad.vic{color:#9a6b00;font-weight:600}
+.scad small{display:block;font-size:11px;font-weight:400;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--tq);color:var(--tq-d);background:#fff;border-radius:999px;padding:3px 10px;font-weight:600;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.pill:hover,.pill.on{background:var(--tq);color:#fff}
+.pill svg{width:12px;height:12px}
+.fasi{display:flex;flex-wrap:wrap;gap:3px;cursor:pointer;min-width:200px;max-width:260px}
+.fase{font-size:11px;font-weight:600;padding:1px 6px;border-radius:5px;white-space:nowrap;border:1px solid transparent}
+.fase.t{background:var(--gi-l);color:#6b5000;border-color:#f3dc7a}
+.fase.p{background:var(--tq-l);color:var(--tq-dd);border-color:#a8e3e3}
+.fase.a{background:#eef1f1;color:#4a5a5b;border-color:#dde4e4}
+.inatt{font-size:12px;font-style:italic;color:#8a6a00;background:var(--gi-ll);border:1px dashed var(--gi-d);padding:3px 9px;border-radius:6px;white-space:nowrap}
+.dest{display:flex;flex-direction:column;gap:3px}
+.sub{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink);white-space:nowrap;font-size:13px}
+.sub::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--tq);flex:none}
+.sub i{font-style:normal;font-weight:500;color:var(--muted);font-size:12px}
+.sub.na{color:#8a6a00}
+.sub.na::before{background:var(--gi-d)}
+.sub.fc{color:var(--muted);font-weight:500;font-style:italic}
+.sub.fc::before{background:#b0bfc0}
+td.q{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+td.q.ap{font-weight:700;color:var(--tq-d);font-size:14.5px;background:rgba(255,208,0,.07)}
+td.q.rim{font-weight:700}
+td.q .z{color:#b7c4c4;font-weight:400}
+td.q .alt{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
+tfoot td{position:sticky;bottom:0;background:var(--tq-dd);color:#fff;font-weight:700;padding:10px 12px;font-variant-numeric:tabular-nums}
+tfoot td.r{text-align:right}
+tfoot td.ap{color:var(--gi)}
+.vuoto{padding:40px;text-align:center;color:var(--muted)}
+
+/* ── Fuori Carico ── */
+details.fc{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+details.fc summary{padding:13px 16px;cursor:pointer;font-weight:600;color:var(--ink2);list-style:none;display:flex;align-items:center;gap:10px}
+details.fc summary::-webkit-details-marker{display:none}
+details.fc summary::before{content:"▸";color:var(--tq);transition:transform .15s}
+details.fc[open] summary::before{transform:rotate(90deg)}
+details.fc summary small{font-weight:400;color:var(--muted)}
+details.fc .tw{border:0;border-top:1px solid var(--line);border-radius:0 0 var(--r) var(--r);max-height:none}
+
+/* ── Finestrella a comparsa ── */
+#pop{position:fixed;z-index:50;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(6,40,42,.22);max-width:min(560px,94vw);max-height:min(430px,70vh);overflow:auto;display:none;font-size:13px}
+#pop.on{display:block}
+#pop .ph{position:sticky;top:0;background:var(--tq-dd);color:#fff;padding:9px 13px;font-weight:600;display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+#pop .ph small{font-weight:400;opacity:.8;font-size:11.5px}
+#pop .ph button{background:none;border:0;color:#fff;font-size:18px;line-height:1;cursor:pointer;padding:0 2px;opacity:.8}
+#pop table{min-width:0;width:100%}
+#pop th{position:static;background:var(--tq-ll);color:var(--ink2);font-size:10.5px;padding:7px 11px;cursor:default;border-bottom:1px solid var(--line)}
+#pop th:hover{background:var(--tq-ll)}
+#pop td{padding:7px 11px;border-bottom:1px solid #f0f4f4;vertical-align:top}
+#pop tr:last-child td{border-bottom:0}
+#pop .nb{font-family:Consolas,monospace;font-weight:700;color:var(--tq-dd)}
+#pop .nota{padding:9px 13px;background:var(--gi-ll);color:#6b5000;font-size:12px;border-top:1px solid #f3e3a0}
+
+footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:var(--muted);font-size:12px;display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+
+@media (max-width:700px){
+  .hd{padding:14px 16px 20px}
+  .hd h1{font-size:20px}
+  main{padding:14px 12px 30px}
+  .conta{margin-left:0;width:100%}
+}
+@media print{
+  header::after,.filtri,.btn-h,#pop{display:none!important}
+  header{background:#fff;color:#000}
+  .tw{max-height:none;overflow:visible;border:0}
+  thead th{background:#ddd!important;color:#000!important}
+  tfoot td{background:#eee;color:#000}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 32 32"><path d="M8 8.5h16L9.5 23.5H24" stroke="#064e52" stroke-width="3.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <h1>Avanzamento <b>Zeta Due</b></h1>
+      <div class="sottot">Firenze Moda Srl &nbsp;·&nbsp; taglio e preparazione, commesse aperte e in arrivo</div>
+    </div>
+    <div class="dx">
+      <span class="agg" id="agg" hidden></span>
+      <button class="btn-h" id="esci" hidden title="Dimentica la chiave su questo computer">Esci</button>
+    </div>
+  </div>
+</header>
+
+<section id="accesso" hidden>
+  <div class="box-acc">
+    <div class="top"></div>
+    <form id="f-acc" autocomplete="off">
+      <h2>Accesso riservato</h2>
+      <p>Inserisci la chiave d'accesso che ti ha comunicato Firenze Moda.</p>
+      <label for="chiave">Chiave d'accesso</label>
+      <input id="chiave" type="password" placeholder="XXXXX-XXXXX-XXXXX-XXXXX" spellcheck="false" autocapitalize="characters">
+      <label class="ricorda"><input type="checkbox" id="ricorda" checked> Ricorda la chiave su questo computer</label>
+      <button class="btn" id="entra" type="submit">Entra</button>
+      <div class="err" id="err" role="alert"></div>
+    </form>
+  </div>
+</section>
+
+<main id="app" hidden>
+  <div class="kpi" id="kpi"></div>
+
+  <div class="filtri">
+    <div class="cerca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Cerca commessa, modello, descrizione, bolla…">
+    </div>
+    <div class="seg" id="stato">
+      <button data-v="tutte" class="on">Tutte<span class="n" id="n-tutte"></span></button>
+      <button data-v="lav">In lavorazione<span class="n" id="n-lav"></span></button>
+      <button data-v="attesa">In attesa<span class="n" id="n-attesa"></span></button>
+    </div>
+    <select id="dest" title="Destinazione assemblaggio"><option value="">Tutte le destinazioni</option></select>
+    <select id="brand" title="Brand"><option value="">Tutti i brand</option></select>
+    <span class="conta" id="conta"></span>
+  </div>
+
+  <div class="tw"><table id="tab"></table></div>
+
+  <details class="fc" id="box-fc" hidden>
+    <summary>Aperte a Zeta Due ma non presenti nel Carico <small id="fc-n"></small></summary>
+    <div class="tw"><table id="tab-fc"></table></div>
+  </details>
+</main>
+
+<footer id="piede" hidden>
+  <span>Quantità: per ogni bolla il valore massimo fra le fasi aperte a Zeta Due, sommato per commessa · come nel Carico di Lavoro.</span>
+  <span id="fonti"></span>
+</footer>
+
+<div id="pop" role="dialog"></div>
+
+<script>
+"use strict";
+/* ───────────────────────── Decifratura ─────────────────────────
+   dati.js contiene i dati compressi e cifrati (AES-256-CTR + HMAC-SHA256,
+   chiavi derivate dalla chiave d'accesso con PBKDF2-SHA256). Senza la chiave
+   giusta il controllo HMAC fallisce e non si vede nulla. */
+const enc = new TextEncoder();
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const cat = (...a) => { const o = new Uint8Array(a.reduce((n, x) => n + x.length, 0)); let i = 0; for (const x of a) { o.set(x, i); i += x.length; } return o; };
+
+async function decifra(pk, chiave) {
+  const salt = b64(pk.salt), iv = b64(pk.iv), ct = b64(pk.ct), mac = b64(pk.mac);
+  const base = await crypto.subtle.importKey("raw", enc.encode(chiave), "PBKDF2", false, ["deriveBits"]);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: pk.iter }, base, 512));
+  const kMac = await crypto.subtle.importKey("raw", bits.slice(32), { name: "HMAC", hash: "SHA-256" }, false, ["verify"]);
+  const ok = await crypto.subtle.verify("HMAC", kMac, mac, cat(enc.encode("ZD1"), salt, iv, ct));
+  if (!ok) throw new Error("chiave");
+  const kAes = await crypto.subtle.importKey("raw", bits.slice(0, 32), "AES-CTR", false, ["decrypt"]);
+  const z = await crypto.subtle.decrypt({ name: "AES-CTR", counter: iv, length: 64 }, kAes, ct);
+  const txt = await new Response(new Blob([z]).stream().pipeThrough(new DecompressionStream("deflate"))).text();
+  return JSON.parse(txt);
+}
+
+/* dati.js si ricarica con un parametro sempre nuovo, così non resta in cache */
+function caricaPacchetto() {
+  return new Promise((ok, ko) => {
+    const s = document.createElement("script");
+    s.src = "dati.js?t=" + Date.now();
+    s.onload = () => { s.remove(); window.ZD_DATI ? ok(window.ZD_DATI) : ko(new Error("vuoto")); };
+    s.onerror = () => { s.remove(); ko(new Error("rete")); };
+    document.head.appendChild(s);
+  });
+}
+
+const MEM = "zd_chiave";
+const leggiMem = () => { try { return localStorage.getItem(MEM) || ""; } catch { return ""; } };
+const scriviMem = v => { try { v ? localStorage.setItem(MEM, v) : localStorage.removeItem(MEM); } catch {} };
+const pulisci = s => s.trim().toUpperCase().replace(/\s+/g, "");
+
+let CHIAVE = "", MAC = "", D = null;
+
+async function avvio() {
+  let pk;
+  try { pk = await caricaPacchetto(); }
+  catch { mostraAccesso("Dati non raggiungibili: controlla la connessione e ricarica la pagina."); return; }
+  const mem = leggiMem();
+  if (mem) {
+    try { await entra(pk, mem, true); return; }
+    catch { scriviMem(""); }
+  }
+  mostraAccesso("");
+  document.getElementById("f-acc").onsubmit = async ev => {
+    ev.preventDefault();
+    const btn = document.getElementById("entra"), k = pulisci(document.getElementById("chiave").value);
+    if (!k) return;
+    btn.disabled = true; btn.textContent = "Verifica…"; document.getElementById("err").textContent = "";
+    try { await entra(pk, k, document.getElementById("ricorda").checked); }
+    catch (e) {
+      document.getElementById("err").textContent = e.message === "chiave" ? "Chiave non valida." : "Errore nell'apertura dei dati.";
+      btn.disabled = false; btn.textContent = "Entra";
+    }
+  };
+}
+
+function mostraAccesso(msg) {
+  document.getElementById("accesso").hidden = false;
+  document.getElementById("err").textContent = msg;
+  setTimeout(() => document.getElementById("chiave").focus(), 50);
+}
+
+async function entra(pk, k, ricorda) {
+  D = await decifra(pk, k);
+  CHIAVE = k; MAC = pk.mac;
+  if (ricorda) scriviMem(k);
+  document.getElementById("accesso").hidden = true;
+  document.getElementById("app").hidden = false;
+  document.getElementById("piede").hidden = false;
+  document.getElementById("esci").hidden = false;
+  prepara();
+  disegna();
+}
+
+/* Controllo periodico: se i dati sono stati aggiornati, si ridisegna da solo */
+setInterval(async () => {
+  if (!CHIAVE) return;
+  try {
+    const pk = await caricaPacchetto();
+    if (pk.mac !== MAC) { D = await decifra(pk, CHIAVE); MAC = pk.mac; prepara(); disegna(); }
+    else aggiornaEtichetta();
+  } catch {}
+}, 10 * 60 * 1000);
+
+document.getElementById("esci").onclick = () => { scriviMem(""); location.reload(); };
+
+/* ───────────────────────── Utilità ───────────────────────── */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = n => (n || 0).toLocaleString("it-IT");
+const oggi = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const gg = iso => iso ? Math.round((new Date(iso + "T00:00:00") - oggi()) / 864e5) : null;
+const dataIt = iso => iso ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(2, 4) : "—";
+
+/* Etichette brevi delle fasi GEA; tipo: t = taglio, p = preparazione, a = altro */
+const FASI = {
+  1: ["Taglio pelle", "t", "T. pelle"], 2: ["Taglio seta", "t", "T. seta"], 10: ["Taglio coperte", "t", "T. coperte"],
+  11: ["Taglio infustiture", "t", "T. infust."], 3: ["Preparazione", "p", "Prep."], 12: ["Prep. pelle/tessuti", "p", "Prep. P/T"],
+  4: ["Pre-assemblaggio", "a", "Pre-ass."], 21: ["Lavorazione bachino", "a", "Bachino"],
+};
+const fase = f => {
+  const n = f.d ? f.d.charAt(0) + f.d.slice(1).toLowerCase() : "Fase " + f.n;
+  return FASI[f.n] || [n, "a", n.length > 12 ? n.slice(0, 11) + "." : n];
+};
+const brandTag = b => /saint|ysl/i.test(b || "") ? '<span class="brand ysl">YSL</span>' : /gucci/i.test(b || "") ? '<span class="brand gu">GUCCI</span>' : "";
+const artTxt = c => [c.mod, c.parte].filter(Boolean).join(" ") + (c.descr ? " · " + c.descr : "");
+const destNomi = c => c.stato === "fuori" ? ["Non in Carico"] : c.dest.map(d => d.sub || "Da assegnare");
+
+/* ───────────────────────── Stato vista ───────────────────────── */
+const V = { q: "", stato: "tutte", dest: "", brand: "", ord: "scad", dir: 1 };
+let RIGHE = [], FUORI = [];
+
+function prepara() {
+  RIGHE = D.commesse.filter(c => c.stato !== "fuori");
+  FUORI = D.commesse.filter(c => c.stato === "fuori");
+  const dests = [...new Set(RIGHE.flatMap(destNomi))].sort((a, b) => a === "Da assegnare" ? 1 : b === "Da assegnare" ? -1 : a.localeCompare(b));
+  const selD = document.getElementById("dest");
+  selD.innerHTML = '<option value="">Tutte le destinazioni</option>' + dests.map(d => `<option${d === V.dest ? " selected" : ""}>${esc(d)}</option>`).join("");
+  const brands = [...new Set(D.commesse.map(c => c.brand).filter(Boolean))].sort();
+  const selB = document.getElementById("brand");
+  selB.innerHTML = '<option value="">Tutti i brand</option>' + brands.map(b => `<option${b === V.brand ? " selected" : ""}>${esc(b)}</option>`).join("");
+  aggiornaEtichetta();
+  const f = D.fonti || {};
+  document.getElementById("fonti").textContent = `Fonti: Carico di Lavoro del ${dtIt(f.carico)} · bolle aperte GEA del ${dtIt(f.aperte)}`;
+}
+const dtIt = iso => iso ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)} ${iso.slice(11, 16)}` : "—";
+
+function aggiornaEtichetta() {
+  if (!D) return;
+  const el = document.getElementById("agg"), ore = (Date.now() - new Date(D.agg)) / 36e5;
+  el.hidden = false;
+  el.textContent = "Aggiornato il " + dtIt(D.agg);
+  el.classList.toggle("vecchio", ore > 30);
+  el.title = ore > 30 ? "I dati non vengono aggiornati da più di un giorno" : "";
+}
+
+function filtra(lista, conStato) {
+  const q = V.q.trim().toLowerCase();
+  return lista.filter(c => {
+    if (conStato && V.stato !== "tutte" && c.stato !== V.stato) return false;
+    if (V.dest && !destNomi(c).includes(V.dest)) return false;
+    if (V.brand && c.brand !== V.brand) return false;
+    if (q) {
+      const t = [c.c, c.mod, c.parte, c.descr, ...destNomi(c), ...c.bolle.map(b => b.b)].join(" ").toLowerCase();
+      if (!t.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+const CHIAVI_ORD = {
+  c: c => c.c, scad: c => c.scad || "9999", bolle: c => c.bolle.length, fasi: c => c.fasi.length,
+  dest: c => destNomi(c).join("/"), lanc: c => c.lanc, ap: c => c.ap, ch: c => c.ch, rim: c => c.rim,
+};
+function ordina(l) {
+  const k = CHIAVI_ORD[V.ord];
+  return l.slice().sort((a, b) => { const x = k(a), y = k(b); return (x < y ? -1 : x > y ? 1 : a.c.localeCompare(b.c)) * V.dir; });
+}
+
+/* ───────────────────────── Disegno ───────────────────────── */
+const COLS = [
+  ["c", "Commessa"], ["scad", "Scadenza"], ["bolle", "Bollette aperte"], ["fasi", "Fasi da fare"],
+  ["dest", "Assemblaggio a"], ["lanc", "Lanciata", "r qta"], ["ap", "Aperte", "r qta main"], ["ch", "Chiuse", "r qta"], ["rim", "Rimaste", "r qta"],
+];
+function testata(conOrd) {
+  return "<thead><tr>" + COLS.map(([k, t, cl = ""]) =>
+    `<th class="${cl}${conOrd && V.ord === k ? " ord" : ""}" data-ord="${k}">${t}<span class="fr">${conOrd && V.ord === k ? (V.dir > 0 ? "▲" : "▼") : "↕"}</span></th>`).join("") + "</tr></thead>";
+}
+
+function riga(c) {
+  const g = gg(c.scad);
+  const clS = g === null ? "" : g < 0 ? "pass" : g <= 7 ? "vic" : "";
+  const nota = g === null ? "" : g < 0 ? `scaduta da ${-g} gg` : g === 0 ? "oggi" : `fra ${g} gg`;
+  const bolle = c.bolle.length
+    ? `<span class="pill" data-pop="bolle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>${c.bolle.length} ${c.bolle.length === 1 ? "bolla" : "bolle"}</span>`
+    : '<span class="z" style="color:#b7c4c4">—</span>';
+  const fasi = c.stato === "attesa"
+    ? '<span class="inatt">In attesa di assegnazione</span>'
+    : `<div class="fasi" data-pop="fasi">${c.fasi.map(f => { const [, t, s] = fase(f); return `<span class="fase ${t}">${esc(s)}</span>`; }).join("")}</div>`;
+  const dest = c.stato === "fuori"
+    ? '<span class="sub fc">Non in Carico</span>'
+    : `<div class="dest">${c.dest.map(d => d.sub
+        ? `<span class="sub">${esc(d.sub)}${c.dest.length > 1 ? ` <i>${fmt(d.q)} pz</i>` : ""}</span>`
+        : `<span class="sub na">Da assegnare${c.dest.length > 1 ? ` <i>${fmt(d.q)} pz</i>` : ""}</span>`).join("")}</div>`;
+  const q = (v, cl = "") => `<td class="q ${cl}">${v ? fmt(v) : '<span class="z">0</span>'}</td>`;
+  const alt = c.altri ? `<span class="alt" title="Bolle tagliate o preparate da altri: ${esc(c.altri_nomi.join(", "))}">di cui ${fmt(c.altri)} da altri</span>` : "";
+  return `<tr class="${c.stato}" data-c="${esc(c.c)}">
+    <td><div class="com">${esc(c.c)}${brandTag(c.brand)}</div><div class="art" title="${esc(artTxt(c))}">${esc(artTxt(c)) || "&nbsp;"}</div></td>
+    <td class="scad ${clS}">${dataIt(c.scad)}${nota ? `<small>${nota}</small>` : ""}</td>
+    <td>${bolle}</td><td>${fasi}</td><td>${dest}</td>
+    ${q(c.lanc)}${q(c.ap, "ap")}<td class="q">${c.ch ? fmt(c.ch) : '<span class="z">0</span>'}${alt}</td>${q(c.rim, "rim")}
+  </tr>`;
+}
+
+function piede(l) {
+  const s = k => fmt(l.reduce((n, c) => n + (c[k] || 0), 0));
+  return `<tfoot><tr><td colspan="2">Totale · ${l.length} commesse</td><td>${fmt(l.reduce((n, c) => n + c.bolle.length, 0))} bolle</td><td colspan="2"></td>
+    <td class="r">${s("lanc")}</td><td class="r ap">${s("ap")}</td><td class="r">${s("ch")}</td><td class="r">${s("rim")}</td></tr></tfoot>`;
+}
+
+function disegna() {
+  chiudiPop();
+  const base = filtra(RIGHE, false);
+  for (const s of ["tutte", "lav", "attesa"])
+    document.getElementById("n-" + s).textContent = base.filter(c => s === "tutte" || c.stato === s).length;
+  const l = ordina(filtra(RIGHE, true));
+  document.getElementById("tab").innerHTML = testata(true) +
+    (l.length ? "<tbody>" + l.map(riga).join("") + "</tbody>" + piede(l)
+              : `<tbody><tr><td colspan="9" class="vuoto">Nessuna commessa corrisponde ai filtri.</td></tr></tbody>`);
+  document.getElementById("conta").textContent = `${l.length} di ${RIGHE.length} commesse`;
+
+  const fc = ordina(filtra(FUORI, false));
+  const box = document.getElementById("box-fc");
+  box.hidden = !FUORI.length;
+  document.getElementById("fc-n").textContent = `· ${fc.length} commesse, ${fmt(fc.reduce((n, c) => n + c.ap, 0))} pz aperti`;
+  document.getElementById("tab-fc").innerHTML = testata(false) + "<tbody>" +
+    (fc.length ? fc.map(riga).join("") : `<tr><td colspan="9" class="vuoto">Nessuna.</td></tr>`) + "</tbody>";
+
+  kpi();
+}
+
+function kpi() {
+  const lav = RIGHE.filter(c => c.stato === "lav"), att = RIGHE.filter(c => c.stato === "attesa");
+  const somma = (l, k) => l.reduce((n, c) => n + (c[k] || 0), 0);
+  const nb = lav.reduce((n, c) => n + c.bolle.length, 0);
+  const daAss = RIGHE.filter(c => c.dest.some(d => !d.sub)).length;
+  document.getElementById("kpi").innerHTML = `
+    <div class="k"><div class="l">In lavorazione</div><div class="v num">${fmt(lav.length)}</div><div class="d">commesse con bolle aperte a Zeta Due</div></div>
+    <div class="k g"><div class="l">Pezzi aperti</div><div class="v num">${fmt(somma(lav, "ap"))}</div><div class="d">su ${fmt(nb)} bolle aperte</div></div>
+    <div class="k g"><div class="l">In attesa</div><div class="v num">${fmt(att.length)}</div><div class="d">${fmt(somma(att, "lanc"))} pz lanciati, taglio non ancora aperto</div></div>
+    <div class="k"><div class="l">Rimaste</div><div class="v num">${fmt(somma(RIGHE, "rim"))}</div><div class="d">pezzi ancora da lavorare in totale</div></div>
+    <div class="k"><div class="l">Da assegnare</div><div class="v num">${fmt(daAss)}</div><div class="d">commesse senza sub per l'assemblaggio</div></div>`;
+}
+
+/* ───────────────────────── Finestrella a comparsa ─────────────────────────
+   Passando col cursore si apre; cliccando resta aperta finché non si clicca fuori.
+   Sui tablet funziona col tocco. */
+const POP = document.getElementById("pop");
+let popEl = null, popFisso = false, popTimer = 0;
+const trova = com => D.commesse.find(c => c.c === com);
+
+function contenutoPop(tipo, c) {
+  if (tipo === "bolle") {
+    return `<div class="ph"><span>${esc(c.c)} · bollette aperte</span><small>${fmt(c.ap)} pz</small><button data-x aria-label="Chiudi">×</button></div>
+      <table><thead><tr><th>Bolla</th><th class="r" style="text-align:right">Pz</th><th>Fasi aperte</th><th>Aperta il</th></tr></thead><tbody>` +
+      c.bolle.map(b => `<tr><td class="nb">${esc(b.b)}</td><td class="num" style="text-align:right;font-weight:700">${fmt(b.q)}${b.tot > b.q ? `<div style="font-size:11px;color:var(--muted);font-weight:400">su ${fmt(b.tot)}</div>` : ""}</td>
+        <td>${b.fasi.map(f => { const [n, t] = fase(f); return `<span class="fase ${t}" style="display:inline-block;margin:1px 2px">${esc(n)}${f.q !== b.q ? " · " + fmt(f.q) : ""}</span>`; }).join("")}</td>
+        <td class="num">${dataIt(b.dal)}</td></tr>`).join("") + "</tbody></table>";
+  }
+  return `<div class="ph"><span>${esc(c.c)} · fasi da fare</span><small>${c.bolle.length} bolle</small><button data-x aria-label="Chiudi">×</button></div>
+    <table><thead><tr><th>Fase</th><th style="text-align:right">Bolle</th><th style="text-align:right">Pz aperti</th></tr></thead><tbody>` +
+    c.fasi.map(f => { const [n, t] = fase(f); return `<tr><td><span class="fase ${t}">${esc(n)}</span> <span style="color:var(--muted);font-size:11px">fase ${f.n}</span></td><td class="num" style="text-align:right">${f.nb}</td><td class="num" style="text-align:right;font-weight:700">${fmt(f.pz)}</td></tr>`; }).join("") +
+    "</tbody></table>" + (c.fasi.some(f => f.pz !== c.ap) ? `<div class="nota">Una bolla può essere aperta in più fasi insieme: i pezzi della commessa sono ${fmt(c.ap)}, non la somma delle fasi.</div>` : "");
+}
+
+function apriPop(el, fisso) {
+  const tr = el.closest("tr"), c = trova(tr.dataset.c);
+  if (!c) return;
+  clearTimeout(popTimer);
+  popEl = el; popFisso = fisso;
+  document.querySelectorAll(".pill.on").forEach(p => p.classList.remove("on"));
+  if (el.classList.contains("pill")) el.classList.add("on");
+  POP.innerHTML = contenutoPop(el.dataset.pop, c);
+  POP.classList.add("on");
+  const r = el.getBoundingClientRect(), w = POP.offsetWidth, h = POP.offsetHeight;
+  let x = Math.min(r.left, innerWidth - w - 10), y = r.bottom + 6;
+  if (y + h > innerHeight - 10) y = Math.max(10, r.top - h - 6);
+  POP.style.left = Math.max(10, x) + "px"; POP.style.top = y + "px";
+}
+function chiudiPop() {
+  POP.classList.remove("on"); popEl = null; popFisso = false;
+  document.querySelectorAll(".pill.on").forEach(p => p.classList.remove("on"));
+}
+const hover = matchMedia("(hover: hover)").matches;
+document.addEventListener("mouseover", e => {
+  if (!hover || popFisso) return;
+  const el = e.target.closest("[data-pop]");
+  if (el) { if (el !== popEl) apriPop(el, false); else clearTimeout(popTimer); }
+  else if (popEl && !e.target.closest("#pop")) { clearTimeout(popTimer); popTimer = setTimeout(chiudiPop, 180); }
+  else if (e.target.closest("#pop")) clearTimeout(popTimer);
+});
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-x]")) { chiudiPop(); return; }
+  const el = e.target.closest("[data-pop]");
+  if (el) { if (popFisso && el === popEl) chiudiPop(); else apriPop(el, true); return; }
+  if (!e.target.closest("#pop")) chiudiPop();
+  const th = e.target.closest("#tab th[data-ord]");
+  if (th) { const k = th.dataset.ord; V.dir = V.ord === k ? -V.dir : (["lanc", "ap", "ch", "rim", "bolle", "fasi"].includes(k) ? -1 : 1); V.ord = k; disegna(); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") chiudiPop(); });
+document.querySelectorAll(".tw").forEach(t => t.addEventListener("scroll", () => { if (!popFisso) chiudiPop(); }, { passive: true }));
+
+/* ───────────────────────── Filtri ───────────────────────── */
+let tQ = 0;
+document.getElementById("q").addEventListener("input", e => { clearTimeout(tQ); tQ = setTimeout(() => { V.q = e.target.value; disegna(); }, 120); });
+document.getElementById("stato").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  V.stato = b.dataset.v;
+  document.querySelectorAll("#stato button").forEach(x => x.classList.toggle("on", x === b));
+  disegna();
+});
+document.getElementById("dest").onchange = e => { V.dest = e.target.value; disegna(); };
+document.getElementById("brand").onchange = e => { V.brand = e.target.value; disegna(); };
+
+if (!window.crypto || !crypto.subtle || typeof DecompressionStream === "undefined")
+  mostraAccesso("Questo browser è troppo vecchio: apri la pagina con Chrome, Edge o Firefox aggiornati.");
+else avvio();
+</script>
+</body>
+</html>
