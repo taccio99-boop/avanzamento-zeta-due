@@ -134,6 +134,11 @@ main{max-width:1500px;margin:0 auto;padding:22px 24px 36px}
 .seg button .n{opacity:.75;font-size:11.5px;margin-left:4px}
 .filtri select{padding:8px 10px;border:2px solid #f1e3a6;border-radius:12px;background:#fff;max-width:230px;font-weight:600}
 .conta{margin-left:auto;font-size:12.5px;color:var(--muted);font-weight:700;padding-right:6px}
+.xls{display:inline-flex;align-items:center;gap:7px;border:0;border-radius:12px;padding:9px 14px;background:#1f8f55;color:#fff;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 3px 0 #146b3e;white-space:nowrap}
+.xls:hover{background:#23a060}
+.xls:active{transform:translateY(2px);box-shadow:0 1px 0 #146b3e}
+.xls:disabled{opacity:.6;cursor:wait}
+.xls svg{width:17px;height:17px}
 
 /* tabella */
 .tw{background:var(--card);border-radius:18px;overflow:auto;max-height:calc(100vh - 170px);box-shadow:var(--ombra);border:1px solid #f6e9b6}
@@ -476,6 +481,10 @@ footer{max-width:1500px;margin:0 auto;padding:0 24px 30px;color:#7a6520;font-siz
       <select id="dest" title="Destinazione assemblaggio"><option value="">Tutte le destinazioni</option></select>
       <select id="brand" title="Brand"><option value="">Tutti i brand</option></select>
       <span class="conta" id="conta"></span>
+      <button class="xls" id="xls" type="button" title="Scarica in Excel le commesse visibili con i filtri attuali">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 13l4 5M13 13l-4 5"/></svg>
+        <span>Esporta Excel</span>
+      </button>
     </div>
 
     <div class="tw"><table id="tab"></table></div>
@@ -833,6 +842,77 @@ $("stato").addEventListener("click", e => {
 });
 $("dest").onchange = e => { V.dest = e.target.value; disegna(); };
 $("brand").onchange = e => { V.brand = e.target.value; disegna(); };
+
+/* ───────────────────────── Esporta Excel ───────────────────────── */
+let libXlsx = null;
+const caricaXlsx = () => libXlsx || (libXlsx = new Promise((ok, ko) => {
+  const s = document.createElement("script");
+  s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+  s.onload = () => ok(window.XLSX);
+  s.onerror = () => { libXlsx = null; ko(new Error("libreria non raggiungibile")); };
+  document.head.appendChild(s);
+}));
+/* data ISO → numero di serie Excel (giorno intero) */
+const dataXl = iso => iso ? Math.round(Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 864e5) + 25569 : "";
+const COL_DATE = ["Scadenza", "Aperta il", "Scadenza commessa"];
+const STATI = { lav: "In lavorazione", attesa: "In attesa", fuori: "Non in Carico" };
+
+function foglio(X, righe, larghezze) {
+  const ws = X.utils.json_to_sheet(righe);
+  const intest = righe.length ? Object.keys(righe[0]) : [];
+  intest.forEach((h, j) => {
+    if (!COL_DATE.includes(h)) return;
+    for (let i = 1; i <= righe.length; i++) {
+      const cella = ws[X.utils.encode_cell({ r: i, c: j })];
+      if (cella && cella.t === "n") cella.z = "dd/mm/yyyy";
+    }
+  });
+  ws["!cols"] = larghezze.map(w => ({ wch: w }));
+  if (ws["!ref"]) ws["!autofilter"] = { ref: ws["!ref"] };
+  return ws;
+}
+
+function righeCommesse(l) {
+  return l.map(c => ({
+    "Commessa": c.c, "Brand": c.brand || "", "Modello": c.mod || "", "Parte": c.parte || "", "Descrizione": c.descr || "",
+    "Stato": STATI[c.stato] || c.stato, "Scadenza": dataXl(c.scad), "Giorni alla scadenza": gg(c.scad) ?? "",
+    "Bollette aperte": c.bolle.length, "Elenco bolle": c.bolle.map(b => b.b).join(", "),
+    "Fasi da fare": c.stato === "attesa" ? "In attesa di assegnazione" : c.fasi.map(f => fase(f)[0]).join(", "),
+    "Assemblaggio a": c.stato === "fuori" ? "Non in Carico"
+      : c.dest.map(d => (d.sub || "Da assegnare") + (c.dest.length > 1 ? ` (${d.q} pz)` : "")).join(" / "),
+    "Lanciata": c.lanc || 0, "Aperte": c.ap || 0, "Chiuse": c.ch || 0,
+    "Chiuse da altri": c.altri || 0, "Rimaste": c.rim || 0,
+  }));
+}
+
+function righeBolle(l) {
+  return l.flatMap(c => c.bolle.map(b => ({
+    "Commessa": c.c, "Brand": c.brand || "", "Modello": c.mod || "", "Descrizione": c.descr || "",
+    "Stato": STATI[c.stato] || c.stato, "Bolla": b.b, "Pz aperti": b.q, "Pz bolla": b.tot || b.q,
+    "Fasi aperte": b.fasi.map(f => fase(f)[0] + (f.q !== b.q ? ` (${f.q} pz)` : "")).join(", "),
+    "Aperta il": dataXl(b.dal), "Scadenza commessa": dataXl(c.scad),
+  })));
+}
+
+$("xls").onclick = async () => {
+  const btn = $("xls"), testo = btn.querySelector("span");
+  btn.disabled = true; testo.textContent = "Preparo…";
+  try {
+    const X = await caricaXlsx();
+    const l = ordina(filtra(RIGHE, true)), fc = ordina(filtra(FUORI, false));
+    const wb = X.utils.book_new();
+    const wc = [18, 10, 14, 8, 30, 14, 11, 10, 10, 30, 34, 26, 10, 10, 10, 10, 10];
+    X.utils.book_append_sheet(wb, foglio(X, righeCommesse(l), wc), "Commesse");
+    X.utils.book_append_sheet(wb, foglio(X, righeBolle([...l, ...fc]), [18, 10, 14, 30, 14, 10, 10, 10, 40, 11, 12]), "Bolle aperte");
+    if (fc.length) X.utils.book_append_sheet(wb, foglio(X, righeCommesse(fc), wc), "Non in Carico");
+    const d = new Date(), p = n => String(n).padStart(2, "0");
+    X.writeFile(wb, `Avanzamento Zeta Due ${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}.xlsx`);
+  } catch (e) {
+    alert("Esportazione non riuscita: " + e.message + ". Controlla la connessione e riprova.");
+  } finally {
+    btn.disabled = false; testo.textContent = "Esporta Excel";
+  }
+};
 
 if (!window.crypto || !crypto.subtle || typeof DecompressionStream === "undefined")
   $("agg-b").textContent = "Questo browser è troppo vecchio: apri la pagina con Chrome, Edge o Firefox aggiornati.";
